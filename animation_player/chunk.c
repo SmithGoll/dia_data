@@ -47,7 +47,7 @@ chunk_t *chunk_load(const char *filename, int chunk_index)
     }
 
     if(fseek(fp, size_info[chunk_index].pos[POS_OFFSET], SEEK_CUR)) goto fail;
-    if(!(res = (chunk_t*)malloc(size_info[chunk_index].pos[POS_SIZE]))) goto fail;
+    if(!(res = (chunk_t*)malloc(size_info[chunk_index].pos[POS_SIZE] + sizeof(chunk_t)))) goto fail;
     res->size = size_info[chunk_index].pos[POS_SIZE];
     if(!fread(res->data, res->size, 1, fp)) goto fail;
 
