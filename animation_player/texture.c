@@ -52,14 +52,14 @@ texture_t *texture_load(const uint8_t *palette_index, palette_t *palette, int w,
     int need_scale = 0;
     texture_t *res = NULL;
     uint32_t *pixels = NULL;
-    int total_index = w * h / 2;
+    int total_index = w * h;
     uint32_t *pixels_tmp = NULL;
 
     if(total_index <= 0) return NULL;
     if(!palette_index || !palette) return NULL;
     if(scale > 1) need_scale = 1;
 
-    pixels_tmp = (uint32_t*)malloc(w * h);
+    pixels_tmp = (uint32_t*)malloc(w * h * sizeof(uint32_t));
     res = (texture_t*)malloc(sizeof(texture_t));
     if(!res || !pixels_tmp)
     {
@@ -69,8 +69,8 @@ texture_t *texture_load(const uint8_t *palette_index, palette_t *palette, int w,
     int cur_pos = 0;
     for(int i = 0; i < total_index; i++)
     {
-        pixels_tmp[cur_pos++] = get_palette_color(palette, (palette_index[i] >> 4) & 0xF);
-        pixels_tmp[cur_pos++] = get_palette_color(palette, palette_index[i] & 0xF);
+        int index_tmp = (i&1) ? (palette_index[i/2] & 0xF) : ((palette_index[i/2] >> 4) & 0xF);
+        pixels_tmp[cur_pos++] = get_palette_color(palette, index_tmp);
     }
 
     // Rescale the image
