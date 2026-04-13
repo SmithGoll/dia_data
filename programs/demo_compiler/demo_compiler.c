@@ -668,6 +668,7 @@ int compile(FILE* out, word_t* word)
                     instr_block_ptr->param = (uint8_t*)malloc(sizeof(uint8_t));
                     if (!(instr_block_ptr->param)) {
                         fprintf(stderr, "Failed to alloc mem for instr block param\n");
+                        goto ret;
                     }
 
                     *(instr_block_ptr->param) = (uint8_t)block_instr_counter;
